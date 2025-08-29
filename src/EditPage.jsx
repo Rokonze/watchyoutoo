@@ -112,16 +112,68 @@ export default function EditPage() {
 
     <div className="flex-1 flex flex-col md:flex-row gap-4 p-4">
       {/* Video Section */}
-      <div className="flex-1">
+      <div className="flex-1 flex flex-col gap-4">
         <YoutubePlayer
           videoId={videoId}
           onReady={(player) => (playerRef.current = player)}
         />
+
+        {/* Comments UNDER video (mobile only) */}
+        <div className="md:hidden flex flex-col gap-4">
+          {/* Controls */}
+          <div className="flex flex-col gap-2">
+            <div className="flex gap-2">
+              <Button
+                className="bg-yellow-500 hover:bg-yellow-400 text-gray-900"
+                onClick={handleSave}
+                disabled={saving}
+              >
+                {saving ? "Saving..." : "Save"}
+              </Button>
+            </div>
+
+            {shareLink && <CopyButton link={shareLink} />}
+
+            <CommentBox
+              onAdd={(item) => handleAddComment(item)}
+              getCurrentTime={getCurrentTime}
+            />
+          </div>
+
+          {/* Comment List */}
+          <div className="flex-1 overflow-y-auto border border-gray-700 rounded p-3 min-h-[30vh] bg-gray-800">
+            {comments.length === 0 ? (
+              <p className="text-sm text-gray-400">No comments yet.</p>
+            ) : (
+              comments.map((c, i) => (
+                <div
+                  key={i}
+                  className="mb-2 flex justify-between items-center border-b border-gray-700 py-2"
+                >
+                  <div>
+                    <span className="text-sm text-gray-400 mr-2">
+                      {formatTime(c.time)}
+                    </span>
+                    <span>{c.text}</span>
+                  </div>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    className="bg-red-600 hover:bg-red-500 text-white"
+                    onClick={() => handleDelete(i)}
+                  >
+                    X
+                  </Button>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
       </div>
 
-      {/* Comments & Controls */}
-      <div className="flex flex-col w-full md:w-80 gap-4">
-        {/* Controls: Save, Share, Add Comment */}
+      {/* Comments SIDEBAR (desktop only) */}
+      <div className="hidden md:flex flex-col w-80 gap-4">
+        {/* Controls */}
         <div className="flex flex-col gap-2">
           <div className="flex gap-2">
             <Button
@@ -141,8 +193,8 @@ export default function EditPage() {
           />
         </div>
 
-        {/* Comments List */}
-        <div className="flex-1 overflow-y-auto border border-gray-700 rounded p-3 min-h-[30vh] lg:max-h-[67vh] bg-gray-800">
+        {/* Comment List */}
+        <div className="flex-1 overflow-y-auto border border-gray-700 rounded p-3 lg:max-h-[67vh] bg-gray-800">
           {comments.length === 0 ? (
             <p className="text-sm text-gray-400">No comments yet.</p>
           ) : (
