@@ -35,10 +35,9 @@ export default function EmojiInput({ value, onChange, onSend }) {
           placeholder="Write a comment..."
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className={"text-gray-700"}
+          className="text-gray-700"
         />
         <Button
-          variant="outline"
           className="bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded-4xl"
           type="button"
           onClick={() => setOpen((o) => !o)}

@@ -25,7 +25,7 @@ export default function CopyButton({ link }) {
         value={link}
         className="flex-1 border rounded p-2 text-sm text-gray-700"
       />
-      <Button className={"bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded"} onClick={handleCopy}>{copied ? "Copied!" : "Copy"}</Button>
+      <Button className="bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded" onClick={handleCopy}>{copied ? "Copied!" : "Copy"}</Button>
     </div>
   );
 }

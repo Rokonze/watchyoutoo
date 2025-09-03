@@ -32,7 +32,7 @@ export default function LandingPage() {
     <Navbar />
     {/* Main Section */}
       <main className="flex flex-1 flex-col justify-center items-center">
-        <Card className="p-6 flex space-x-2 items-center shadow-lg">
+        <Card className="p-6 flex items-center shadow-lg">
           
             <Input
               type="text"

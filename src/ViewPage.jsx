@@ -16,7 +16,6 @@ export default function ViewPage() {
   const [revealedSet, setRevealedSet] = useState(() => new Set());
 
   const playerRef = useRef(null);
-  const commentsRef = useRef([]);
 
   // Load video + comments
   useEffect(() => {
@@ -88,15 +87,7 @@ export default function ViewPage() {
       : -1;
   }, [videoData, currentTime]);
 
-  // Auto-scroll active comment into view
-  useEffect(() => {
-    if (activeIndex !== -1 && commentsRef.current[activeIndex]) {
-      commentsRef.current[activeIndex].scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-    }
-  }, [activeIndex]);
+
 
   function formatTime(seconds) {
     const m = Math.floor(seconds / 60);
@@ -122,9 +113,11 @@ return (
           <div className="w-full md:w-auto md:px-0">
             <YoutubePlayer
               videoId={videoData.video_id}
-              onReady={(player) => (playerRef.current = player) & setPlayerReady(true)}
+              onReady={(player) => {
+                        playerRef.current = player;
+                        setPlayerReady(true);
+                      }}
             />
-
             {/* Timeline */}
             <div className="w-full mt-2">
               <CommentTimeline
@@ -132,7 +125,6 @@ return (
                 duration={playerRef.current?.getDuration() ?? 0}
                 currentTime={currentTime}
                 onSeek={(time) => playerRef.current?.seekTo(time, true)}
-                className="bg-gray-800 rounded"
               />
             </div>
           </div>

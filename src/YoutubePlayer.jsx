@@ -1,9 +1,13 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import YouTube from "react-youtube";
 
 export default function YoutubePlayer({ videoId, onReady }) {
-  const playerRef = useRef(null);
-  const [playerSize, setPlayerSize] = useState({ width: 640, height: 360 });
+  
+  const getInitialSize = () => {
+  const width = Math.min(window.innerWidth * 0.95, 1024);
+  return { width, height: (width * 9) / 16 };
+  };
+  const [playerSize, setPlayerSize] = useState(getInitialSize);
 
   useEffect(() => {
     function handleResize() {
@@ -25,10 +29,7 @@ export default function YoutubePlayer({ videoId, onReady }) {
         height: playerSize.height,
         playerVars: { modestbranding: 1, controls: 1 },
       }}
-      onReady={(event) => {
-        playerRef.current = event.target;
-        if (onReady) onReady(event.target);
-      }}
+      onReady={(event) => onReady?.(event.target)}
     />
   );
 }
